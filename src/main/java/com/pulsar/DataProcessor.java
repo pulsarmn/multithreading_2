@@ -33,7 +33,12 @@ public class DataProcessor {
 
         activeTasks.incrementAndGet();
         CompletableFuture.supplyAsync(task::call, executorService)
-                .thenApply(sum -> taskResult.put(taskName, sum))
+                .thenApply(sum -> {
+                    synchronized (lock) {
+                        taskResult.put(taskName, sum);
+                    }
+                    return sum;
+                })
                 .exceptionally(e -> {
                     System.out.println("Произошло исключение: " + e.getMessage());
                     completedTasksCounter.decrementAndGet();

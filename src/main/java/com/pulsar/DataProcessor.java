@@ -42,6 +42,12 @@ public class DataProcessor {
                 .thenRun(activeTasks::decrementAndGet);
     }
 
+    public Optional<Integer> getResult(String taskName) {
+        synchronized (lock) {
+            return Optional.ofNullable(taskResult.get(taskName));
+        }
+    }
+
     public void shutdown() {
         executorService.shutdown();
         executorService.close();

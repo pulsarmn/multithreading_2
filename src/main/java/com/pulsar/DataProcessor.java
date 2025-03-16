@@ -23,4 +23,17 @@ public class DataProcessor {
         this.executorService = executorService;
         this.taskResult = new HashMap<>();
     }
+
+    public void shutdown() {
+        executorService.shutdown();
+        executorService.close();
+    }
+
+    public int getActiveCount() {
+        return activeTasks.get();
+    }
+
+    public int getCompetedCount() {
+        return completedTasksCounter.get();
+    }
 }
